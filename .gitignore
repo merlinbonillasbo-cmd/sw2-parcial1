@@ -1,3 +1,56 @@
+# Environment & Secrets
+.env
+.env.*
+*.env
+
+# AI & LLM Models / Heavy Weights / Ollama
+.ollama/
+ollama/
+models/
+*.gguf
+*.bin
+*.safetensors
+*.pth
+*.pt
+*.onnx
+.cache/
+
+# Web App Runtime & Generated Data
+web-app/uploads/*
+!web-app/uploads/.gitkeep
+web-app/generated/*
+!web-app/generated/.gitkeep
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.sqlite-journal
+
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+ENV/
+
+# Logs & Temporary Files
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor / IDE — Vim & backup files
+*.sw?
+.*.sw?
+*~
+
 # Dependencies
 node_modules
 node_modules_container
@@ -19,12 +72,6 @@ test-integration/**/*.png
 # Generator artifacts
 /.jhipster
 lib/**/app.jdl
-
-# Logs
-*debug.log*
-
-# OS files
-.DS_Store
 
 # Editor / IDE — VS Code
 .vscode
@@ -51,11 +98,9 @@ nbbuild/
 nbdist/
 .nb-gradle/
 
-# Editor / IDE — Vim
-*.sw?
-
 # Documentation
 /docs
 
 # Allow customizations without having a dirty tree
 .devcontainer
+

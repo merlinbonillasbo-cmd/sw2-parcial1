@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio CASE Pro - Generador de Software Inteligente</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="background-globes">
+    <div class="globe globe-1"></div>
+    <div class="globe globe-2"></div>
+    <div class="globe globe-3"></div>
+  </div>
+
+  <!-- VISTA DE AUTENTICACIÓN (LOGIN / REGISTRO) -->
+  <div id="authSection" class="auth-container">
+    <div class="auth-card glass-card">
+      <div class="auth-header">
+        <div class="logo-icon">⚡</div>
+        <h2>Studio CASE <span>Pro</span></h2>
+        <p>Plataforma para Generación e Ingeniería de Software</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button id="tabAuthLogin" class="auth-tab active">Iniciar Sesión</button>
+        <button id="tabAuthRegister" class="auth-tab">Crear Cuenta</button>
+      </div>
+
+      <form id="formLogin" class="auth-form">
+        <div class="form-group">
+          <label for="loginEmail">Correo Electrónico</label>
+          <input type="email" id="loginEmail" required placeholder="correo@ejemplo.com">
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Contraseña</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary btn-large width-full">Ingresar a la Plataforma</button>
+      </form>
+
+      <form id="formRegister" class="auth-form" style="display: none;">
+        <div class="form-group">
+          <label for="regNombre">Nombre Completo</label>
+          <input type="text" id="regNombre" required placeholder="Tu Nombre">
+        </div>
+        <div class="form-group">
+          <label for="regEmail">Correo Electrónico</label>
+          <input type="email" id="regEmail" required placeholder="correo@ejemplo.com">
+        </div>
+        <div class="form-group">
+          <label for="regPassword">Contraseña</label>
+          <input type="password" id="regPassword" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary btn-large width-full">Registrar Cuenta</button>
+      </form>
+
+      <div id="authError" class="auth-error-msg" style="display: none;"></div>
+    </div>
+  </div>
+
+  <!-- VISTA PRINCIPAL DEL APLICATIVO CON NAVEGACIÓN LATERAL -->
+  <div id="mainSection" class="app-container" style="display: none;">
+    <header class="navbar">
+      <div class="logo-container">
+        <div class="logo-icon">⚡</div>
+        <div class="logo-text">
+          <h1>Studio CASE <span>Pro</span></h1>
+          <p>Modelado e Ingeniería de Software por Especificaciones</p>
+        </div>
+      </div>
+
+      <div class="user-profile-menu">
+        <div class="user-badge" id="userNameBadge">👤 Usuario</div>
+        <button id="btnLogout" class="btn btn-danger btn-small">Cerrar Sesión</button>
+      </div>
+    </header>
+
+    <div class="app-body-layout">
+      <!-- NAVEGACIÓN LATERAL (SIDEBAR) EN ORDEN SOLICITADO -->
+      <aside class="sidebar">
+        <div class="sidebar-title">NAVEGACIÓN</div>
+        <nav class="sidebar-nav">
+          <button class="tab-btn active" data-tab="tab-chat">
+            <span class="tab-icon">💬</span> Chat
+          </button>
+          <button class="tab-btn" data-tab="tab-archivos">
+            <span class="tab-icon">📁</span> Mis Archivos
+          </button>
+          <button class="tab-btn" data-tab="tab-ia">
+            <span class="tab-icon">🤖</span> Asistente IA
+          </button>
+          <button class="tab-btn" data-tab="tab-especificaciones">
+            <span class="tab-icon">🛠️</span> Generar por Especificaciones
+          </button>
+          <button class="tab-btn" data-tab="tab-jdl">
+            <span class="tab-icon">📄</span> Editor y Importador JDL
+          </button>
+          <button class="tab-btn" data-tab="tab-vision">
+            <span class="tab-icon">🖼️</span> Diagrama a JDL (IA Visión)
+          </button>
+        </nav>
+      </aside>
+
+      <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+      <main class="main-content">
+
+        <!-- 1. CHAT (OLLAMA LLAMA3) -->
+        <section id="tab-chat" class="tab-content active">
+          <div class="card glass-card">
+            <div class="chat-header">
+              <div>
+                <h2>💬 Chat Generador JDL (Ollama Llama 3)</h2>
+                <p class="subtitle">Describe tu software en lenguaje natural y Ollama generará la arquitectura JDL estricta.</p>
+              </div>
+              <span class="badge badge-completado">🤖 Ollama llama3 Activo</span>
+            </div>
+
+            <div class="chat-box" id="ollamaChatBox">
+              <div class="chat-message ai-message">
+                <div class="msg-avatar">🦙</div>
+                <div class="msg-content">
+                  <p>¡Hola! Soy tu asistente de ingeniería CASE alimentado por **Ollama Llama 3**.</p>
+                  <p>Escribe las especificaciones de tu sistema (ej: <em>"Quiero un software para una veterinaria con mascotas, dueños, citas médicas y vacunas"</em>) y generaré el código JDL ejecutable.</p>
+                </div>
+              </div>
+            </div>
+
+            <form id="formOllamaChat" class="chat-input-bar">
+              <input type="text" id="ollamaPromptInput" placeholder="Ej. Quiero un sistema para una clínica odontológica con pacientes, citas y doctores..." required>
+              <button type="submit" class="btn btn-primary" id="btnSendOllama">
+                ⚡ Generar JDL
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- 2. MIS ARCHIVOS (SOFTWARE CREADO) -->
+        <section id="tab-archivos" class="tab-content">
+          <div class="card glass-card">
+            <div class="header-with-btn">
+              <div>
+                <h2>Espacio de Trabajo: Mis Archivos de Proyecto</h2>
+                <p class="subtitle">Gestión de proyectos y software generado anteriormente.</p>
+              </div>
+              <button id="btnCreateFileModal" class="btn btn-primary">➕ Crear Nuevo Archivo / Proyecto</button>
+            </div>
+
+            <!-- Banner del Archivo Activo -->
+            <div class="active-file-banner" id="activeFileBanner">
+              <div class="file-icon">📄</div>
+              <div class="file-details">
+                <span>Archivo Activo Seleccionado:</span>
+                <h3 id="activeFileName">Proyecto_Principal.jdl</h3>
+              </div>
+              <span class="badge badge-completado">Listo para Generar</span>
+            </div>
+
+            <div class="table-responsive margin-top">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre del Archivo / Proyecto</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
+                    <th>Fecha de Creación</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                  <tr>
+                    <td colspan="6" class="text-center">Cargando tus archivos...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. ASISTENTE IA (PRUEBAS Y MODELADO) -->
+        <section id="tab-ia" class="tab-content">
+          <div class="card glass-card">
+            <div class="chat-header">
+              <div>
+                <h2>🤖 Asistente IA (Generador de Pruebas JDL)</h2>
+                <p class="subtitle">Asistente auxiliar para explorar arquitecturas y consultar dudas sobre JDL.</p>
+              </div>
+              <a href="https://www.jhipster.tech/jdl-studio/" target="_blank" class="btn btn-secondary btn-small">
+                🔗 Probar en JDL Studio ↗
+              </a>
+            </div>
+
+            <div class="chat-box" id="chatBox">
+              <div class="chat-message ai-message">
+                <div class="msg-avatar">🤖</div>
+                <div class="msg-content">
+                  <p>¡Hola! Soy tu asistente de prueba Gemini CASE. Puedes consultarme conceptos de arquitectura o generar prototipos adicionales de JDL.</p>
+                </div>
+              </div>
+            </div>
+
+            <form id="formChatAi" class="chat-input-bar">
+              <input type="text" id="aiPromptInput" placeholder="Ej. Crea un sistema contable con facturas, clientes y pagos..." required>
+              <button type="submit" class="btn btn-primary" id="btnSendAi">
+                ✨ Consultar IA
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- 4. GENERAR POR ESPECIFICACIONES -->
+        <section id="tab-especificaciones" class="tab-content">
+          <div class="card glass-card">
+            <h2>Generar Software por Especificaciones</h2>
+            <p class="subtitle">Configura los parámetros técnicos y entidades del archivo de proyecto activo.</p>
+
+            <form id="formIndicaciones">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="nombreProyecto">Nombre de la Aplicación</label>
+                  <input type="text" id="nombreProyecto" name="nombreProyecto" placeholder="Ej. SistemaOdontologico" value="SistemaOdontologico" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="clientFramework">Framework Frontend</label>
+                  <select id="clientFramework" name="clientFramework">
+                    <option value="react" selected>React JS (Recomendado)</option>
+                    <option value="angular">Angular</option>
+                    <option value="vue">Vue.js</option>
+                    <option value="no">Sin Frontend (Solo Backend API)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="prodDatabaseType">Base de Datos de Producción</label>
+                  <select id="prodDatabaseType" name="prodDatabaseType">
+                    <option value="postgresql" selected>PostgreSQL</option>
+                    <option value="mysql">MySQL</option>
+                    <option value="mariadb">MariaDB</option>
+                    <option value="h2Disk">H2 Disco / Memoria</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="authenticationType">Método de Autenticación</label>
+                  <select id="authenticationType" name="authenticationType">
+                    <option value="jwt" selected>JWT Token Security</option>
+                    <option value="oauth2">OAuth2 / Keycloak</option>
+                    <option value="session">HTTP Session</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="buildTool">Herramienta de Compilación</label>
+                  <select id="buildTool" name="buildTool">
+                    <option value="maven" selected>Maven (Java)</option>
+                    <option value="gradle">Gradle (Java)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <h2>Diagramador de Entidades CASE</h2>
+              <p class="subtitle">Define los modelos de datos que se compilarán en tu proyecto.</p>
+
+              <div id="entidadesContainer" class="entidades-list">
+                <!-- Entidades dinámicas aquí -->
+              </div>
+
+              <button type="button" id="btnAddEntidad" class="btn btn-secondary">
+                ➕ Agregar Nueva Entidad
+              </button>
+
+              <div class="action-bar">
+                <button type="submit" class="btn btn-primary btn-large">
+                  🚀 Generar Código en mi Archivo de Proyecto
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- 5. EDITOR Y IMPORTADOR JDL -->
+        <section id="tab-jdl" class="tab-content">
+          <div class="card glass-card">
+            <div class="header-with-btn">
+              <div>
+                <h2>Editor e Importador JDL</h2>
+                <p class="subtitle">Inserta código JDL directamente o sube un archivo <code>.jdl</code>.</p>
+              </div>
+              <a href="https://www.jhipster.tech/jdl-studio/" target="_blank" class="btn btn-secondary btn-small">
+                🔗 Abrir JDL Studio ↗
+              </a>
+            </div>
+
+            <form id="formJdl">
+              <div class="drag-drop-zone" id="dropZone">
+                <div class="drop-icon">📁</div>
+                <h3>Arrastra tu archivo <code>.jdl</code> aquí</h3>
+                <p>o haz clic para explorar en tu equipo</p>
+                <input type="file" id="jdlFileInput" accept=".jdl,.txt" hidden>
+              </div>
+
+              <div class="form-group margin-top">
+                <label for="jdlText">Código JDL Completo</label>
+                <textarea id="jdlText" name="jdlText" rows="14" class="code-editor" placeholder="application {
+  config {
+    baseName MiSoftwarePro,
+    applicationType monolith,
+    packageName com.miempresa.app,
+    prodDatabaseType postgresql,
+    clientFramework react
+  }
+  entities *
+}
+
+entity Paciente {
+  nombre String required,
+  documento String required
+}"></textarea>
+              </div>
+
+              <div class="action-bar">
+                <button type="submit" class="btn btn-primary btn-large">
+                  ⚡ Generar Software desde JDL
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- 6. DIAGRAMA A JDL (IA VISIÓN) -->
+        <section id="tab-vision" class="tab-content">
+          <div class="card glass-card">
+            <div class="chat-header">
+              <div>
+                <h2>🖼️ Detectar Diagrama de Clases (IA Visión)</h2>
+                <p class="subtitle">Sube una foto o captura de un diagrama de clases UML y la IA detectará las entidades, campos y relaciones para convertirlos a JDL.</p>
+              </div>
+              <span class="badge badge-completado">📷 Visión Multimodal Activa</span>
+            </div>
+
+            <form id="formVisionAi">
+              <div class="drag-drop-zone" id="visionDropZone">
+                <div class="drop-icon">🖼️</div>
+                <h3>Arrastra la foto de tu diagrama de clases aquí</h3>
+                <p>o haz clic para explorar tus archivos (PNG, JPG, WEBP)</p>
+                <input type="file" id="visionFileInput" accept="image/*" hidden>
+              </div>
+
+              <div id="visionPreviewContainer" style="display: none;" class="margin-top text-center">
+                <p class="subtitle">Vista previa de la imagen seleccionada:</p>
+                <img id="visionImagePreview" style="max-width: 100%; max-height: 350px; border-radius: var(--radius-md); border: 1px solid var(--border-color);" alt="Vista previa diagrama">
+              </div>
+
+              <div class="action-bar margin-top">
+                <button type="submit" class="btn btn-primary btn-large" id="btnAnalyzeVision">
+                  ✨ Analizar Diagrama y Generar JDL
+                </button>
+              </div>
+            </form>
+
+            <div id="visionResultSection" style="display: none;" class="margin-top">
+              <div class="divider"></div>
+              <h3>Código JDL Detectado por la IA:</h3>
+              <textarea id="visionJdlResult" rows="12" class="code-editor margin-top" readonly></textarea>
+
+              <div class="action-bar margin-top">
+                <button type="button" class="btn btn-secondary" id="btnCopyVisionJdl">
+                  📋 Copiar JDL
+                </button>
+                <button type="button" class="btn btn-secondary" id="btnSendVisionToChat">
+                  💬 Enviar a Chat (Ollama)
+                </button>
+                <button type="button" class="btn btn-primary" id="btnUseVisionJdl">
+                  ⚡ Usar este JDL en Editor / Generar Software
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Modal de Logs / Progreso -->
+    <div class="modal-overlay" id="logModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="modalTitle">Generando Software</h3>
+          <button class="modal-close" id="btnCloseModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="spinner-container" id="modalSpinner">
+            <div class="spinner"></div>
+            <p>Compilando arquitectura y generando código fuente... Por favor espera.</p>
+          </div>
+          <pre class="log-viewer" id="modalLogViewer">Iniciando proceso...</pre>
+        </div>
+        <div class="modal-footer" id="modalFooter">
+          <!-- Botón de descarga -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

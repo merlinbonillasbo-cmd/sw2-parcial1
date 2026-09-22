@@ -1,0 +1,8 @@
+node_modules
+dist
+web-app/generated
+web-app/uploads
+.git
+.idea
+.vscode
+*.log
