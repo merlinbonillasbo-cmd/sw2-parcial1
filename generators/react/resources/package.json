@@ -45,7 +45,7 @@
     "react-infinite-scroll-component": "7.2.1",
     "rimraf": "6.1.3",
     "sass": "1.77.6",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "typescript-eslint": "8.70.0",
     "vite": "8.3.0",
     "vite-plugin-static-copy": "4.1.1",
